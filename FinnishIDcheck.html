@@ -1,0 +1,140 @@
+
+<html>
+<head>
+<title>Credit Card Checker</title>
+<script type="text/javascript">
+function goodnumber(HETU)
+{
+
+// assume everything is good
+var valid = new Boolean(true);
+var symbol= HETU.charAt(6);
+
+if ((HETU==null) || (HETU==""))
+	valid= false;
+
+if (HETU.length != 11)
+	valid=false;
+
+
+// checking for digits is probably overkill
+// checksum unlikely to be OK if letters used
+// but just in case
+
+for (i=0;i<5;i++)
+	{
+	// extract nth character
+	c = HETU.charAt(i);
+	
+	// is it not a digit?
+	if ((c < "0") || (c > "9"))
+		valid=false;
+	}
+for (i=7;i<10;i++)
+	{
+	// extract nth character
+	c = HETU.charAt(i);
+	
+	// is it not a digit?
+	if ((c < "0") || (c > "9"))
+		valid=false;
+	}
+if(!(symbol == "-" || symbol == "+" || symbol == "A"))
+	valid = false;
+
+// checksum calculation
+
+var sum = 0;
+
+
+sum1 = HETU.substring(0, 6);
+sum2 = HETU.substring(7, 10); 
+sum = sum1.concat(sum2);
+mod = parseInt(sum) % 31;
+
+// map mod to letter
+lstring ="0123456789ABCDEFHJKLMNPRSTUVWXY";
+letter = lstring.charAt(mod);
+alert(letter);
+// do the input letter and the calculated letter match?
+if(!HETU.charAt(10) == letter) 
+{
+	valid=false;
+}
+
+/*if(mod != ((HETU.charCodeAt(11) < 65 || HETU.charCodeAt(11) > 91))
+{
+	valid = false;
+}*/
+
+
+
+return valid;
+}
+
+
+
+
+function checknumber()
+{
+
+
+// extract number from form
+ccnum = document.getElementById("numtext").value
+
+// ask goodnumber function is it OK
+if (goodnumber(ccnum))
+	{
+	// it is good
+	document.getElementById("outputtext").style.background="#00ff00";
+	document.getElementById("outputtext").innerHTML= ccnum + " looks good to me!";
+	var happy = new Image();
+	happy.src = "thumbsup.jpg";
+	document.getElementById('spend').src=happy.src;
+
+	}
+else
+	{
+	// it is bad
+	document.getElementById("outputtext").style.background="#00ffff";
+	document.getElementById("outputtext").innerHTML= ccnum + " looks dodgy to me!";
+	var sad = new Image();
+	sad.src = "thumbsdown.jpg";
+	document.getElementById('spend').src=sad.src;
+	}
+}
+
+</script>
+
+
+</head>
+<body>
+<div>
+HETU Checker
+
+
+<img src="dontknowdice.jpg" id="spend" width="150" height="150" alt="dontknow" />
+
+
+
+<br/><br/>
+<form name="phoneform">
+<!-- name stuff is in form so that it can be submitted -->
+<!-- we are not submitting this form anywhere though -->
+Number: <input type="text" name="thephonenumber" id="numtext" value="311280-888Y" /><br />
+</form> 
+
+</div>
+<div id="outputtext" style="background-color:#999999; width:400">
+Right now I know nothing</div>
+
+<br/><br/>
+<button type="button" onclick="checknumber()">Check</button>
+
+
+
+
+
+
+
+</html>

@@ -1,0 +1,2 @@
+# ckecksums
+Various JavaScript checksums
